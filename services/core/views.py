@@ -1,16 +1,18 @@
 from django.http import Http404
 from django.shortcuts import render
-from rest_framework import generics, viewsets, status,mixins
+from rest_framework import generics, viewsets, status, mixins
 from rest_framework.response import Response
 from .models import Booking, BookingRoom, Guest, Payment, PaymentBookingRoom, Room, RoomType
-from .serializers import BookingRoomSerializer, BookingSerializer, GuestSerializer, PaymentBookingRoomSerializer, PaymentSerializer, RoomTypeSerializer,RoomSerializer
+from .serializers import BookingRoomSerializer, BookingSerializer, GuestSerializer, PaymentBookingRoomSerializer, \
+    PaymentSerializer, RoomTypeSerializer, RoomSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.pagination import PageNumberPagination,LimitOffsetPagination,CursorPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
+
 
 # Create your views here.
 
 
-#Curd of Guest
+# Curd of Guest
 class GuestAllViewSet(generics.ListAPIView):
     queryset = Guest.objects.all()
     serializer_class = GuestSerializer
@@ -47,10 +49,12 @@ class GuestDelete(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         instance.delete()
 
+
 class RoomTypeFull(viewsets.ModelViewSet):
     queryset = RoomType.objects.all()
     serializer_class = RoomTypeSerializer
     permission_classes = (IsAuthenticated,)
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
@@ -62,12 +66,13 @@ class RoomTypeFull(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         instance.delete()
 
-#room
+
+# room
 class RoomFull(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
     permission_classes = (IsAuthenticated,)
-    
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
@@ -78,14 +83,16 @@ class RoomFull(viewsets.ModelViewSet):
 
     def perform_destroy(self, instance):
         instance.delete()
-#booking guest room record
+
+
+# booking guest room record
 
 class CombinedBookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
     def create(self, request, *args, **kwargs):
-        created_booking_rooms =[]
+        created_booking_rooms = []
         booking_serializer = BookingSerializer(data=request.data)
         if booking_serializer.is_valid():
             booking = booking_serializer.save()
@@ -98,12 +105,17 @@ class CombinedBookingViewSet(viewsets.ModelViewSet):
                     created_booking_rooms.append(booking_room)
                     # Perform any additional logic here, such as associating the booking_room with the booking
                 else:
-                    return Response({'booking_rooms': booking_room_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'booking_rooms': booking_room_serializer.errors},
+                                    status=status.HTTP_400_BAD_REQUEST)
             booking_rooms_data = BookingRoomSerializer(created_booking_rooms, many=True).data
-            return Response({'booking': booking_serializer.data,'booking-rooms': booking_rooms_data, 'message': 'Booking and booking rooms created successfully.'}, status=status.HTTP_201_CREATED)
+            return Response({'booking': booking_serializer.data, 'booking-rooms': booking_rooms_data,
+                             'message': 'Booking and booking rooms created successfully.'},
+                            status=status.HTTP_201_CREATED)
         else:
             return Response(booking_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#booking rooms
+
+
+# booking rooms
 class BookingRoomAllViewSet(generics.ListAPIView):
     queryset = BookingRoom.objects.all()
     serializer_class = BookingRoomSerializer
@@ -140,6 +152,7 @@ class BookingRoomDelete(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         instance.delete()
 
+
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all().order_by('-created_at')
     serializer_class = PaymentSerializer
@@ -154,8 +167,11 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 if payment_booking_room_serializer.is_valid():
                     payment_booking_room_serializer.save(payment=payment)
                 else:
-                    return Response({'payment_booking_rooms': payment_booking_room_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'payment': payment_serializer.data, 'message': 'Payment and related records created successfully.'}, status=status.HTTP_201_CREATED)
+                    return Response({'payment_booking_rooms': payment_booking_room_serializer.errors},
+                                    status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'payment': payment_serializer.data, 'message': 'Payment and related records created successfully.'},
+                status=status.HTTP_201_CREATED)
         else:
             return Response(payment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -170,14 +186,20 @@ class PaymentViewSet(viewsets.ModelViewSet):
                 payment_booking_room_id = payment_booking_room_data.get('id')
                 if payment_booking_room_id:
                     payment_booking_room = PaymentBookingRoom.objects.get(id=payment_booking_room_id)
-                    payment_booking_room_serializer = PaymentBookingRoomSerializer(payment_booking_room, data=payment_booking_room_data, partial=partial)
+                    payment_booking_room_serializer = PaymentBookingRoomSerializer(payment_booking_room,
+                                                                                   data=payment_booking_room_data,
+                                                                                   partial=partial)
                 else:
-                    payment_booking_room_serializer = PaymentBookingRoomSerializer(data=payment_booking_room_data, partial=partial)
+                    payment_booking_room_serializer = PaymentBookingRoomSerializer(data=payment_booking_room_data,
+                                                                                   partial=partial)
                 if payment_booking_room_serializer.is_valid():
                     payment_booking_room_serializer.save()
                 else:
-                    return Response({'payment_booking_rooms': payment_booking_room_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'payment': payment_serializer.data, 'message': 'Payment and related records updated successfully.'}, status=status.HTTP_200_OK)
+                    return Response({'payment_booking_rooms': payment_booking_room_serializer.errors},
+                                    status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'payment': payment_serializer.data, 'message': 'Payment and related records updated successfully.'},
+                status=status.HTTP_200_OK)
         else:
             return Response(payment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -185,13 +207,14 @@ class PaymentViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
+
 class CombinedPaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
-    
+
     def create(self, request, *args, **kwargs):
-        created_payment_rooms =[]
+        created_payment_rooms = []
         payment_serializer = PaymentSerializer(data=request.data)
         if payment_serializer.is_valid():
             payment = payment_serializer.save()
@@ -204,12 +227,14 @@ class CombinedPaymentViewSet(viewsets.ModelViewSet):
                     created_payment_rooms.append(payment_room)
                     # Perform any additional logic here, such as associating the payment_room with the payment
                 else:
-                    return Response({'payment_rooms': payment_room_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'payment_rooms': payment_room_serializer.errors},
+                                    status=status.HTTP_400_BAD_REQUEST)
             payment_rooms_data = PaymentBookingRoomSerializer(created_payment_rooms, many=True).data
-            return Response({'payment': payment_serializer.data,'payment-booking-rooms': payment_rooms_data, 'message': 'Payment is successfully.'}, status=status.HTTP_201_CREATED)
+            return Response({'payment': payment_serializer.data, 'payment-booking-rooms': payment_rooms_data,
+                             'message': 'Payment is successfully.'}, status=status.HTTP_201_CREATED)
         else:
             return Response(payment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
@@ -221,14 +246,20 @@ class CombinedPaymentViewSet(viewsets.ModelViewSet):
                 payment_booking_room_id = payment_booking_room_data.get('id')
                 if payment_booking_room_id:
                     payment_booking_room = PaymentBookingRoom.objects.get(id=payment_booking_room_id)
-                    payment_booking_room_serializer = PaymentBookingRoomSerializer(payment_booking_room, data=payment_booking_room_data, partial=partial)
+                    payment_booking_room_serializer = PaymentBookingRoomSerializer(payment_booking_room,
+                                                                                   data=payment_booking_room_data,
+                                                                                   partial=partial)
                 else:
-                    payment_booking_room_serializer = PaymentBookingRoomSerializer(data=payment_booking_room_data, partial=partial)
+                    payment_booking_room_serializer = PaymentBookingRoomSerializer(data=payment_booking_room_data,
+                                                                                   partial=partial)
                 if payment_booking_room_serializer.is_valid():
                     payment_booking_room_serializer.save()
                 else:
-                    return Response({'payment_booking_rooms': payment_booking_room_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'payment': payment_serializer.data, 'message': 'Payment and related records updated successfully.'}, status=status.HTTP_200_OK)
+                    return Response({'payment_booking_rooms': payment_booking_room_serializer.errors},
+                                    status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'payment': payment_serializer.data, 'message': 'Payment and related records updated successfully.'},
+                status=status.HTTP_200_OK)
         else:
             return Response(payment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

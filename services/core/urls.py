@@ -17,11 +17,15 @@ urlpatterns = [
     # Room type CRUD # http://127.0.0.1:8000/apis/Full_Room_Type/
     # Room CRUD # http://127.0.0.1:8000/apis/Full_Room/
     # booking guest and booking room combined create record # http://127.0.0.1:8000/apis/full_booking/
-    path('apis/', include(router.urls)),  
+    path('apis/', include(router.urls)),
     # Guest CRUD
-    path('api/List_All_Booking_Room', views.BookingRoomAllViewSet.as_view()),  # http://127.0.0.1:8000/api/List_All_Booking_Room
-    path('api/Create_Booking_Room', views.BookingRoomCreate.as_view()),  # todo #http://127.0.0.1:8000/api/Create_Booking_Room
-    path('api/Update_Booking_Room/<id>', views.BookingRoomUpdate.as_view()),  # todo #http://127.0.0.1:8000/api/Update_Booking_Room
-    path('api/Delete_Booking_Room/<id>', views.BookingRoomDelete.as_view()),  # todo #http://127.0.0.1:8000/api/Destroy_Booking_Room
+    path('api/List_All_Booking_Room', views.BookingRoomAllViewSet.as_view()),
+    # http://127.0.0.1:8000/api/List_All_Booking_Room
+    path('api/Create_Booking_Room', views.BookingRoomCreate.as_view()),
+    # todo #http://127.0.0.1:8000/api/Create_Booking_Room
+    path('api/Update_Booking_Room/<id>', views.BookingRoomUpdate.as_view()),
+    # todo #http://127.0.0.1:8000/api/Update_Booking_Room
+    path('api/Delete_Booking_Room/<id>', views.BookingRoomDelete.as_view()),
+    # todo #http://127.0.0.1:8000/api/Destroy_Booking_Room
 
 ]

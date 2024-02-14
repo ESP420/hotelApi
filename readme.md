@@ -2,7 +2,7 @@
 
 ## Description
 
-Este proyecto es una API de gestión hotelera utilizando Django Rest Framework (DRF) y PostgreSQL. El objetivo es aprender a crear API con Django y el alcance incluye la gestión de habitaciones, huespedes, reservas y reservas de habitacion y pago por el hospedaje.
+Este proyecto es una API de gestión hotelera utilizando Django Rest Framework (DRF) y PostgreSQL. El objetivo es aprender a crear API con Django y el alcance incluye la gestión de habitaciones, huespedes, reservas y reservas de habitacion y pago por el hospedaje y seguridad mediante token.
 
 ## Modelo de la db
 
@@ -14,7 +14,7 @@ En el siguiente documento de Postman, encontrarás una explicación detallada de
 
 [Documento de pruevas postman](https://documenter.getpostman.com/view/1064965/2sA2r54RSN)
 
-## Installation
+## Instalacion
 
 Clone repository:
 
@@ -28,7 +28,7 @@ Iniciar los contenedores Docker utilizando el comando:
 docker compose up
 ```
 
-## Configure the App
+## Configuracion de la app
 
 Acceder al contenedor Docker con nombre 'web':
 
@@ -36,7 +36,7 @@ Acceder al contenedor Docker con nombre 'web':
 docker exec -it web bash
 ```
 
-Run the following commands in the Docker container 'web' shell (bash) to configure:
+Ejecute los siguientes comandos en el shell del contenedor  'web' Docker (bash) para configurar:
 
 ```
 > python ./manage.py makemigrations
@@ -48,6 +48,8 @@ Run the following commands in the Docker container 'web' shell (bash) to configu
 
 ## And navigate to Hotel API address:
 
+Access as superadmin in admin panel to generate token and generate a token to start using the Api:
+
 ```
-http://localhost:8000/api/
+http://localhost:8000/admin/
 ```

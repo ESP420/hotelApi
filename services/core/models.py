@@ -8,7 +8,8 @@ class Guest(models.Model):
     id = models.AutoField(primary_key=True)
     last_name = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=255)
+    identity_card_number = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
@@ -22,10 +23,10 @@ class RoomType(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     price_por_night = models.DecimalField(max_digits=10, decimal_places=2, null=True)  # Price with max
-    currency = models.BooleanField( choices=(
-    (True, 'BOB'),
-    (False, 'USD')
-),default=True)   # Currency: US
+    currency = models.BooleanField(choices=(
+        (True, 'BOB'),
+        (False, 'USD')
+    ), default=True)  # Currency: US
     capacity = models.IntegerField()  # number of people that can stay in the room
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,9 +42,9 @@ class Room(models.Model):
     room_number = models.IntegerField()
     floor_number = models.IntegerField()
     status = models.BooleanField(choices=(
-    (True, 'Free room'),
-    (False, 'Occupied room')
-),default=True)
+        (True, 'Free room'),
+        (False, 'Occupied room')
+    ), default=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
