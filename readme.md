@@ -46,9 +46,9 @@ Ejecute los siguientes comandos en el shell del contenedor  'web' Docker (bash) 
 
 ```
 
-## And navigate to Hotel API address:
+## Navigate aL Url de la API:
 
-Access as superadmin in admin panel to generate token and generate a token to start using the Api:
+Inicie sesión como superadministrador en el panel de administración para generar un token y comenzar a usar la API:
 
 ```
 http://localhost:8000/admin/
