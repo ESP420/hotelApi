@@ -1,4 +1,4 @@
-# Hotel Booking Python/Django CRU
+# Hotel Booking Python/Django CRUD
 
 ## Description
 
@@ -10,7 +10,7 @@ Este proyecto es una API de gestión hotelera utilizando Django Rest Framework (
 
 ## Postman test
 
-En el siguiente documento de Postman, encontrarás una explicación detallada de cada endpoint, incluyendo el propósito y la funcionalidad específica que desempeñan en el sistema. Además, se proporcionarán ejemplos y casos de uso relevantes para cada endpoint, con el fin de facilitar su comprensión y uso adecuado:
+En el siguiente documento de Postman, encontrarás una explicación de cada endpoint, incluyendo el propósito y la funcionalidad específica que desempeñan en el sistema. Además, se proporcionarán ejemplos y casos de uso relevantes para cada endpoint.
 
 [Documento de pruevas postman](https://documenter.getpostman.com/view/1064965/2sA2r54RSN)
 
@@ -48,8 +48,8 @@ Ejecute los siguientes comandos en el shell del contenedor  'web' Docker (bash) 
 
 ## Navigate aL Url de la API:
 
-Inicie sesión como superadministrador en el panel de administración para generar un token y comenzar a usar la API:
+Acceder a la siguiente url para crear un nuevo usuario y obtener un token para comenzar a usar la API:
 
 ```
-http://localhost:8000/admin/
+http://127.0.0.1:8000/api/Create_User
 ```

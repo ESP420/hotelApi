@@ -27,5 +27,5 @@ urlpatterns = [
     # todo #http://127.0.0.1:8000/api/Update_Booking_Room
     path('api/Delete_Booking_Room/<id>', views.BookingRoomDelete.as_view()),
     # todo #http://127.0.0.1:8000/api/Destroy_Booking_Room
-
+    path('api/Create_User', views.UserCreate.as_view())
 ]
