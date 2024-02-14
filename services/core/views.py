@@ -11,6 +11,8 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 import json
+
+
 # Create your views here.
 
 
@@ -270,24 +272,26 @@ class CombinedPaymentViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-#new user
+
+# new user
 class UserCreate(generics.CreateAPIView):
-    permission_classes = (AllowAny,)
-    def post(self,request):
+    permission_classes = AllowAny
+
+    def post(self, request):
         username = request.data['username']
         email = request.data['email']
-        password = request.data['password']       
+        password = request.data['password']
         if User.objects.filter(username=username).exists():
-             return Response({'username': ['A user with this username already exists.']})
+            return Response({'username': ['A user with this username already exists.']})
 
         if User.objects.filter(email=email).exists():
-             return Response({'email': ['A user with this email already exists.']})
+            return Response({'email': ['A user with this email already exists.']})
 
-        new_user = User.objects.create_user(username, email,password)
+        new_user = User.objects.create_user(username, email, password)
         new_user.first_name = request.data['first_name']
         new_user.last_name = request.data['last_name']
         new_user.is_staff = request.data['staff']
         new_user.save()
         user_key = Token.objects.create(user=new_user)
-        data = {'detail':'User created successfully','token':user_key.key}
-        return Response(data,content_type="application/json",status=status.HTTP_201_CREATED)
+        data = {'detail': 'User created successfully', 'token': user_key.key}
+        return Response(data, content_type="application/json", status=status.HTTP_201_CREATED)

@@ -39,10 +39,9 @@ docker exec -it web bash
 Ejecute los siguientes comandos en el shell del contenedor  'web' Docker (bash) para configurar:
 
 ```
-> python ./manage.py makemigrations
-> python ./manage.py makemigrations core
-> python ./manage.py migrate
-> python ./manage.py createsuperuser
+> python manage.py makemigrations core
+> python manage.py migrate
+> python manage.py createsuperuser
 
 ```
 
