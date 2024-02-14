@@ -53,3 +53,7 @@ Acceder a la siguiente url para crear un nuevo usuario y obtener un token para c
 ```
 http://127.0.0.1:8000/api/Create_User
 ```
+
+Agregar en el header la Authorization con el token del usuario creado:
+
+token 123123234as43sdf345sdfg34453423qweqwe2g
