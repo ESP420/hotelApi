@@ -275,7 +275,7 @@ class CombinedPaymentViewSet(viewsets.ModelViewSet):
 
 # new user
 class UserCreate(generics.CreateAPIView):
-    permission_classes = AllowAny
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         username = request.data['username']
